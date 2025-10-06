@@ -20,10 +20,7 @@ export function AdminDashboardClient({
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Admin Dashboard</h1>
         <form action={logoutAdmin}>
-          <Button
-            variant="outline"
-            className="border-primary/50 text-primary hover:bg-primary/10 bg-transparent"
-          >
+          <Button variant="outline" className="border-primary/50 text-primary hover:bg-primary/10 bg-transparent">
             Log out
           </Button>
         </form>
@@ -35,10 +32,7 @@ export function AdminDashboardClient({
           { k: "Active Events", v: String(activeEventsCount) },
           { k: "Registrations", v: "120" },
         ].map((s) => (
-          <div
-            key={s.k}
-            className="rounded-xl border border-border/60 bg-secondary/20 p-5"
-          >
+          <div key={s.k} className="rounded-xl border border-border/60 bg-secondary/20 p-5">
             <p className="text-sm text-muted-foreground">{s.k}</p>
             <p className="mt-2 text-2xl font-semibold text-primary">{s.v}</p>
           </div>
@@ -58,7 +52,7 @@ export function AdminDashboardClient({
         <TabsContent value="members" className="mt-6">
           <div className="grid gap-4 rounded-xl border border-border/60 bg-secondary/10 p-4">
             <h2 className="font-medium">Add Member</h2>
-            <form action={createMember} className="grid gap-3 md:grid-cols-2">
+            <form action={createMember} encType="multipart/form-data" className="grid gap-3 md:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="name">Name</Label>
                 <Input id="name" name="name" placeholder="Name" required />
@@ -97,11 +91,7 @@ export function AdminDashboardClient({
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="linkedin_url">LinkedIn URL</Label>
-                <Input
-                  id="linkedin_url"
-                  name="linkedin_url"
-                  placeholder="https://linkedin.com/in/..."
-                />
+                <Input id="linkedin_url" name="linkedin_url" placeholder="https://linkedin.com/in/..." />
               </div>
               <div className="grid gap-2 md:col-span-2">
                 <Label htmlFor="bio">Bio</Label>
@@ -122,20 +112,14 @@ export function AdminDashboardClient({
         <TabsContent value="events" className="mt-6">
           <div className="grid gap-4 rounded-xl border border-border/60 bg-secondary/10 p-4">
             <h2 className="font-medium">Create Event</h2>
-            <form action={createEvent} className="grid gap-3 md:grid-cols-2">
+            <form action={createEvent} encType="multipart/form-data" className="grid gap-3 md:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="title">Title</Label>
                 <Input id="title" name="title" placeholder="Event title" required />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="starts_at">Date/Time</Label>
-                <Input
-                  id="starts_at"
-                  name="starts_at"
-                  type="datetime-local"
-                  required
-                  step={60}
-                />
+                <Input id="starts_at" name="starts_at" type="datetime-local" required step={60} />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="department">Department</Label>
