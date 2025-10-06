@@ -52,7 +52,7 @@ export function AdminDashboardClient({
         <TabsContent value="members" className="mt-6">
           <div className="grid gap-4 rounded-xl border border-border/60 bg-secondary/10 p-4">
             <h2 className="font-medium">Add Member</h2>
-            <form action={createMember} encType="multipart/form-data" className="grid gap-3 md:grid-cols-2">
+            <form action={createMember} className="grid gap-3 md:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="name">Name</Label>
                 <Input id="name" name="name" placeholder="Name" required />
@@ -112,7 +112,7 @@ export function AdminDashboardClient({
         <TabsContent value="events" className="mt-6">
           <div className="grid gap-4 rounded-xl border border-border/60 bg-secondary/10 p-4">
             <h2 className="font-medium">Create Event</h2>
-            <form action={createEvent} encType="multipart/form-data" className="grid gap-3 md:grid-cols-2">
+            <form action={createEvent} className="grid gap-3 md:grid-cols-2">
               <div className="grid gap-2">
                 <Label htmlFor="title">Title</Label>
                 <Input id="title" name="title" placeholder="Event title" required />
