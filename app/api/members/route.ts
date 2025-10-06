@@ -2,21 +2,21 @@ import { NextResponse } from "next/server"
 import { getServerSupabase } from "@/lib/supabase/server"
 
 export async function GET() {
-  try {
-    const supabase = getServerSupabase()
-    const { data, error } = await supabase
-      .from("members")
-      .select("id,name,role,batch,status,skills,avatar_url,github_url,github_handle,linkedin_url,bio,created_at")
-      .order("created_at", { ascending: false })
+  const supabase = getServerSupabase()
+  const { data, error } = await supabase
+    .from("members")
+    .select("id,name,role,avatar_url,skills,bio,created_at")
+    .order("created_at", { ascending: false })
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-    if (error) {
-      console.log("[v0] /api/members select error:", error.message)
-      return NextResponse.json({ error: error.message }, { status: 500 })
-    }
-
-    return NextResponse.json({ members: data ?? [] })
-  } catch (err) {
-    console.log("[v0] /api/members unexpected error:", err)
-    return NextResponse.json({ error: "Unexpected server error" }, { status: 500 })
-  }
+  const members = (data ?? []).map((m) => ({
+    id: m.id,
+    name: m.name,
+    role: m.role,
+    image_url: (m as any).image_url ?? (m as any).avatar_url ?? null, // prefer legacy field if present
+    bio: m.bio,
+    tags: (m as any).tags ?? m.skills ?? null,
+    created_at: m.created_at,
+  }))
+  return NextResponse.json({ members })
 }
