@@ -46,22 +46,12 @@ function toGradient(role: string) {
 }
 
 export default function MembersPage() {
-  let supabase: ReturnType<typeof getSupabaseBrowser> | null = null
-  try {
-    supabase = getSupabaseBrowser()
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log("[v0] Supabase client unavailable on client; skipping realtime subscription:", (e as Error)?.message)
-  }
+  const supabase = getSupabaseBrowser()
 
   const fetcher = async () => {
-    const res = await fetch("/api/members", { cache: "no-store" })
-    if (!res.ok) {
-      const msg = await res.text().catch(() => res.statusText)
-      throw new Error(`Failed to load members: ${msg}`)
-    }
-    const json = (await res.json()) as { members: DbMember[] }
-    return json.members
+    const { data, error } = await supabase.from("members").select("*").order("name", { ascending: true })
+    if (error) throw error
+    return data as DbMember[]
   }
 
   const { data, mutate } = useSWR("members:list", fetcher, { revalidateOnFocus: false })
@@ -70,16 +60,16 @@ export default function MembersPage() {
   const [selectedMember, setSelectedMember] = useState<DbMember | null>(null)
 
   useEffect(() => {
-    if (!supabase) return
+    // realtime subscription for live updates
     const channel = supabase
       .channel("public:members")
       .on("postgres_changes", { event: "*", schema: "public", table: "members" }, () => {
-        mutate()
+        mutate() // refetch on any change
       })
       .subscribe()
 
     return () => {
-      supabase?.removeChannel(channel)
+      supabase.removeChannel(channel)
     }
   }, [mutate, supabase])
 
