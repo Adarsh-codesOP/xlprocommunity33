@@ -49,7 +49,7 @@ export default function MembersPage() {
   const supabase = getSupabaseBrowser()
 
   const fetcher = async () => {
-    const { data, error } = await supabase.from("members").select("*").order("name", { ascending: true })
+    const { data, error } = await supabase.from("members").select("*").order("created_at", { ascending: true })
     if (error) throw error
     return data as DbMember[]
   }
